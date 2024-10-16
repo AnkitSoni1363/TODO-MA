@@ -18,7 +18,7 @@ const Login = props => {
 
   const loginnow = async () => {
     const response = await fetch(
-      `https://todo-web-3.onrender.com/api/user/login`,
+      `https://todo-web-7ntw.onrender.com/api/user/login`,
       {
         method: 'POST',
         headers: {
@@ -30,10 +30,9 @@ const Login = props => {
     const final = await response.json();
     if (final.token) {
       await AsyncStorage.setItem('userToken', final.token);
-      // console.warn('Token stored successfully:');
       props.navigation.navigate('Entry');
     } else {
-      console.warn('Login failed:', final.message || 'No token returned');
+      console.warn('Login failed:');
     }
   };
 

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notecontext from './notecontext';
 
@@ -8,13 +9,12 @@ const Notestate = props => {
   const listtodo = async () => {
     const token = await AsyncStorage.getItem('userToken');
     if (!token) {
-      // console.warn('No token found, access denied.');
       return;
     }
 
     try {
       const response = await fetch(
-        `https://todo-web-3.onrender.com/api/notes/fetchtodos`,
+        `https://todo-web-7ntw.onrender.com/api/notes/fetchtodos`,
         {
           method: 'GET',
           headers: {
@@ -24,15 +24,14 @@ const Notestate = props => {
         },
       );
       const final = await response.json();
-      // console.warn('Fetched notes:', final);
 
       if (final && final.notes) {
         setNotes(final.notes);
       } else {
-        console.warn('No notes found or invalid response');
+        Alert.alert('Error', 'No notes found or invalid response.');
       }
     } catch (error) {
-      console.error('Error fetching notes:', error);
+      Alert.alert('Error', 'Error fetching notes.');
     }
   };
 
@@ -41,7 +40,7 @@ const Notestate = props => {
 
     try {
       const response = await fetch(
-        `https://todo-web-3.onrender.com/api/notes/addtodo`,
+        `https://todo-web-7ntw.onrender.com/api/notes/addtodo`,
         {
           method: 'POST',
           headers: {
@@ -52,10 +51,9 @@ const Notestate = props => {
         },
       );
       const final = await response.json();
-      // console.warn(final);
       listtodo();
     } catch (error) {
-      console.error('Error adding todo:', error);
+      Alert.alert('Error', 'Error adding todo.');
     }
   };
 
@@ -64,7 +62,7 @@ const Notestate = props => {
 
     try {
       const response = await fetch(
-        `https://todo-web-3.onrender.com/api/notes/deletetodo/${id}`,
+        `https://todo-web-7ntw.onrender.com/api/notes/deletetodo/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -77,12 +75,37 @@ const Notestate = props => {
       if (response.ok) {
         const newnotes = notes.filter(note => note._id !== id);
         setNotes(newnotes);
-        // console.warn('Note deleted:', id);
       } else {
-        console.warn('Failed to delete the note');
+        Alert.alert('Error', 'Failed to delete the note.');
       }
     } catch (error) {
-      console.error('Error deleting todo:', error);
+      Alert.alert('Error', 'Error deleting todo.');
+    }
+  };
+
+  const searchtodo = async text => {
+    const token = await AsyncStorage.getItem('userToken');
+
+    try {
+      const response = await fetch(
+        `https://todo-web-7ntw.onrender.com/api/notes/search?text=${text}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': token,
+          },
+        },
+      );
+      const searchResponse = await response.json();
+
+      if (response.ok) {
+        setNotes(searchResponse);
+      } else {
+        Alert.alert('Error', 'No todos found.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Error searching todos.');
     }
   };
 
@@ -92,7 +115,7 @@ const Notestate = props => {
 
   return (
     <notecontext.Provider
-      value={{notes, setNotes, listtodo, addtodo, deletetodo}}>
+      value={{notes, setNotes, listtodo, addtodo, deletetodo, searchtodo}}>
       {props.children}
     </notecontext.Provider>
   );

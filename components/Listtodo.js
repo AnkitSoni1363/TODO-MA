@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import Navbar from './Navbar';
 import notecontext from '../context/notes/notecontext';
@@ -14,7 +15,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const {height} = Dimensions.get('window');
 
 const Listtodo = () => {
-  const {notes, listtodo, deletetodo} = useContext(notecontext);
+  const {notes, listtodo, deletetodo, searchtodo} = useContext(notecontext);
+
+  const onchange = text => {
+    if (text.trim() === '') {
+      listtodo();
+    } else {
+      searchtodo(text);
+    }
+  };
 
   useEffect(() => {
     listtodo();
@@ -27,6 +36,13 @@ const Listtodo = () => {
       </View>
       <View style={styles.two}>
         <Text style={styles.heading}>All TO-DO</Text>
+        <View>
+          <TextInput
+            style={styles.search}
+            placeholder="Search TODO"
+            onChangeText={onchange}
+          />
+        </View>
         <ScrollView>
           {notes.length > 0 ? (
             notes.map(item => (
@@ -74,6 +90,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#44ab30',
     textAlign: 'center',
+  },
+  search: {
+    borderColor: 'gray',
+    borderWidth: 2,
+    borderRadius: 5,
+    height: 45,
+    width: 400,
+    marginVertical: 10,
+    fontSize: 20,
   },
   data: {
     borderColor: 'gray',

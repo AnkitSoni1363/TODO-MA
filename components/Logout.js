@@ -53,19 +53,12 @@ const styles = StyleSheet.create({
   middle: {
     alignItems: 'center',
     marginTop: height * 0.3,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 325,
   },
   buttonContainer1: {
     marginVertical: 10,
-  },
-  exactbutton1: {
-    backgroundColor: '#3399FF',
-    height: 37,
-    width: 200,
-    fontSize: 20,
-    color: 'white',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    borderRadius: 20,
   },
   exactbutton2: {
     backgroundColor: '#44ab30',
@@ -76,6 +69,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     borderRadius: 20,
+  },
+  developer: {
+    fontSize: 22.5,
+    fontWeight: 'bold',
+    color: '#44ab30',
   },
 });
 

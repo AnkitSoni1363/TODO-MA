@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,15 +20,13 @@ function App() {
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
-        // console.warn('Token:', token); // Debug: Log token value
         if (token) {
-          console.log('User is logged in with token:');
           setInitialRoute('Entry');
         } else {
-          console.log('No token found, user is not logged in');
+          Alert.alert('Login Status', 'No token found, user is not logged in');
         }
       } catch (error) {
-        console.error('Error checking token:', error);
+        Alert.alert('Error', 'Error checking token: ');
       } finally {
         setIsLoading(false);
       }

@@ -18,7 +18,7 @@ const Signup = props => {
 
   const signupnow = async () => {
     const response = await fetch(
-      `https://todo-web-3.onrender.com/api/user/signup`,
+      `https://todo-web-7ntw.onrender.com/api/user/signup`,
       {
         method: 'POST',
         headers: {
@@ -28,13 +28,11 @@ const Signup = props => {
       },
     );
     const final = await response.json();
-    // console.warn(final);
     if (final.token) {
       await AsyncStorage.setItem('userToken', final.token);
-      // console.warn('Token stored successfully:');
       props.navigation.navigate('Entry');
     } else {
-      console.warn('Signup failed:', final.message || 'No token returned');
+      console.warn('Signup failed');
     }
   };
   return (
